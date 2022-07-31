@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsapi.dto.news.NewsDto;
 import ru.clevertec.newsapi.entity.comment.Comment;
 import ru.clevertec.newsapi.entity.news.News;
+import ru.clevertec.newsapi.exception.EntityByIdNotFoundException;
 import ru.clevertec.newsapi.mapper.comment.CommentListMapper;
 import ru.clevertec.newsapi.mapper.news.NewsMapper;
 import ru.clevertec.newsapi.repository.comment.CommentRepository;
@@ -49,7 +50,7 @@ public class NewsServiceImp implements NewsService {
     @Override
     @Transactional
     public Long updateNews(Long id, NewsDto newsDto) {
-        News news = newsRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        News news = newsRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         news.setTitle(newsDto.getTitle());
         news.setText(newsDto.getText());
         news.setDate(LocalDateTime.now());
@@ -58,7 +59,7 @@ public class NewsServiceImp implements NewsService {
 
     @Override
     public NewsDto getNews(Long id, Pageable pageable) {
-        News news = newsRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        News news = newsRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         NewsDto newsDto = newsMapper.toDto(news);
         List<Comment> comments = commentRepository.findAllByNews_Id(id, pageable).getContent();
         newsDto.setComments(commentListMapper.toDtoList(comments));

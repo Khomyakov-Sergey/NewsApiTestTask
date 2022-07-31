@@ -26,8 +26,6 @@ public class News {
     @Column(columnDefinition = "TEXT")
     private String text;
 
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private List<Comment> comments;
 

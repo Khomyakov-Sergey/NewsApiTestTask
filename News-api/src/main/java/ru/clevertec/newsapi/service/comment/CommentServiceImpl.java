@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.newsapi.dto.comment.CommentDto;
 import ru.clevertec.newsapi.dto.comment.CreateCommentDto;
 import ru.clevertec.newsapi.entity.comment.Comment;
+import ru.clevertec.newsapi.exception.EntityByIdNotFoundException;
 import ru.clevertec.newsapi.mapper.comment.CommentListMapper;
 import ru.clevertec.newsapi.mapper.comment.CommentMapper;
 import ru.clevertec.newsapi.repository.comment.CommentRepository;
@@ -37,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public Long updateComment(Long id, CommentDto commentDto) {
-        Comment comment = commentRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         comment.setText(commentDto.getText());
         comment.setDate(LocalDateTime.now());
         return comment.getId();
@@ -50,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto getComment(Long id) {
-        Comment comment = commentRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         return commentMapper.toDto(comment);
     }
 
