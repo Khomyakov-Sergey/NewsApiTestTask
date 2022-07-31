@@ -1,18 +1,17 @@
-package ru.clevertec.newsapi.entity;
+package ru.clevertec.newsapi.entity.comment;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.clevertec.newsapi.entity.news.News;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class News {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,14 +20,15 @@ public class News {
     @Column(updatable = false)
     private LocalDateTime date;
 
-    private String title;
-
-    @Column(columnDefinition = "TEXT")
     private String text;
+
+    private String username;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "news_id")
+    private News news;
+
 
 }

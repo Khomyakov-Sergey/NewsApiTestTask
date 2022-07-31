@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.clevertec.newsapi.dto.CommentDto;
-import ru.clevertec.newsapi.dto.request.RequestCommentDto;
-import ru.clevertec.newsapi.services.comment.CommentService;
+import ru.clevertec.newsapi.dto.comment.CommentDto;
+import ru.clevertec.newsapi.dto.comment.CreateCommentDto;
+import ru.clevertec.newsapi.service.comment.CommentService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,7 +22,7 @@ public class CommentController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Long createComment(@RequestBody @Valid RequestCommentDto commentDto) {
+    public Long createComment(@RequestBody @Valid CreateCommentDto commentDto) {
         return commentService.createComment(commentDto);
     }
 

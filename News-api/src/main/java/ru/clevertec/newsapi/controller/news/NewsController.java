@@ -8,8 +8,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.clevertec.newsapi.dto.NewsDto;
-import ru.clevertec.newsapi.services.news.NewsService;
+import ru.clevertec.newsapi.dto.news.NewsDto;
+import ru.clevertec.newsapi.service.news.NewsService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -38,8 +38,11 @@ public class NewsController {
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public NewsDto getNews(@PathVariable Long id) {
-        return newsService.getNews(id);
+    public NewsDto getNews(@PathVariable Long id,
+                           @PageableDefault(size = 6)
+                           @SortDefault(sort = "date", direction = Sort.Direction.DESC)
+                           Pageable pageable) {
+        return newsService.getNews(id, pageable);
     }
 
     @PostMapping()

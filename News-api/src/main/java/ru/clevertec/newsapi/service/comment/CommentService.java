@@ -1,13 +1,13 @@
-package ru.clevertec.newsapi.services.comment;
+package ru.clevertec.newsapi.service.comment;
 
 import org.springframework.data.domain.Pageable;
-import ru.clevertec.newsapi.dto.CommentDto;
-import ru.clevertec.newsapi.dto.request.RequestCommentDto;
+import ru.clevertec.newsapi.dto.comment.CommentDto;
+import ru.clevertec.newsapi.dto.comment.CreateCommentDto;
 
 import java.util.List;
 
 public interface CommentService {
-    Long createComment(RequestCommentDto requestCommentDto);
+    Long createComment(CreateCommentDto createCommentDto);
 
     Long updateComment(Long id, CommentDto requestCommentDto);
 

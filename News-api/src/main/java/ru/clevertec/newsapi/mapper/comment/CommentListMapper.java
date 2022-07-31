@@ -1,8 +1,8 @@
-package ru.clevertec.newsapi.mapper;
+package ru.clevertec.newsapi.mapper.comment;
 
 import org.mapstruct.Mapper;
-import ru.clevertec.newsapi.dto.CommentDto;
-import ru.clevertec.newsapi.entity.Comment;
+import ru.clevertec.newsapi.dto.comment.CommentDto;
+import ru.clevertec.newsapi.entity.comment.Comment;
 
 import java.util.List;
 

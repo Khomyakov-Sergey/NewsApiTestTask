@@ -1,8 +1,8 @@
-package ru.clevertec.newsapi.repositories.news;
+package ru.clevertec.newsapi.repository.news;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import ru.clevertec.newsapi.entity.News;
+import ru.clevertec.newsapi.entity.news.News;
 
 import java.util.List;
 

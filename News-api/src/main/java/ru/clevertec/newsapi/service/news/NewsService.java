@@ -1,7 +1,7 @@
-package ru.clevertec.newsapi.services.news;
+package ru.clevertec.newsapi.service.news;
 
 import org.springframework.data.domain.Pageable;
-import ru.clevertec.newsapi.dto.NewsDto;
+import ru.clevertec.newsapi.dto.news.NewsDto;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public interface NewsService {
 
     Long updateNews(Long id, NewsDto requestNewsDto);
 
-    NewsDto getNews(Long id);
+    NewsDto getNews(Long id, Pageable pageable);
 
     void deleteNews(Long id);
 
