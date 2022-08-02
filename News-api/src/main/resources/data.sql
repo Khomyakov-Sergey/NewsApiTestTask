@@ -1,5 +1,5 @@
-DROP TABLE if exists comments;
-DROP TABLE if exists news;
+drop table if exists comments;
+drop table if exists news;
 
 create table news
 (

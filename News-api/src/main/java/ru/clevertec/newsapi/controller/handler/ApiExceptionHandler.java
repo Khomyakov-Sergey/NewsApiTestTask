@@ -15,14 +15,12 @@ public class ApiExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityByIdNotFoundException.class)
     public ApiError handleEntityByIdNotFoundException (EntityByIdNotFoundException exception){
-        log.info((exception.toString()));
         return new ApiError(exception.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException.class)
     public ApiError handleDefaultException (RuntimeException exception){
-        log.info((exception.toString()));
         return new ApiError(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
 }
