@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comments_generator")
+    @SequenceGenerator(name = "comments_generator", sequenceName = "seq_comment", allocationSize = 1)
     @Column(name = "comment_id", nullable = false)
     private Long id;
 

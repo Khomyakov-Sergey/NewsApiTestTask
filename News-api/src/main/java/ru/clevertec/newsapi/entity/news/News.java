@@ -15,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class News {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "news_generator")
+    @SequenceGenerator(name = "news_generator", sequenceName = "seq_news", allocationSize = 1)
     @Column(name = "news_id", nullable = false)
     private Long id;
 

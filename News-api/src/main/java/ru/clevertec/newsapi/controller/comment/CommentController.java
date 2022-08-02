@@ -12,6 +12,11 @@ import ru.clevertec.newsapi.service.comment.CommentService;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Controller class for comments. It gets request and redirects it to the service class.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Slf4j
 @RequestMapping("/comments")
 @RestController
