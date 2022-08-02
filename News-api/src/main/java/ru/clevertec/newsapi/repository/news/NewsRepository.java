@@ -7,6 +7,6 @@ import ru.clevertec.newsapi.entity.news.News;
 import java.util.List;
 
 public interface NewsRepository extends JpaRepository<News, Long> {
-    @Query(value = "SELECT * FROM news WHERE to_tsvector(title)|| to_tsvector(text) @@ plainto_tsquery(?1)", nativeQuery = true)
+    @Query(value = "SELECT * FROM news WHERE to_tsvector(news_title)|| to_tsvector(news_text) @@ plainto_tsquery(?1)", nativeQuery = true)
     List<News> search(String keyword);
 }

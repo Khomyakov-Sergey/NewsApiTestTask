@@ -25,7 +25,7 @@ public class NewsController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<NewsDto> getAllNews(@PageableDefault(size = 6)
-                                    @SortDefault(sort = "date", direction = Sort.Direction.DESC)
+                                    @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
                                     Pageable pageable) {
         return newsService.getAllNews(pageable);
     }
@@ -40,7 +40,7 @@ public class NewsController {
     @ResponseStatus(HttpStatus.OK)
     public NewsDto getNews(@PathVariable Long id,
                            @PageableDefault(size = 6)
-                           @SortDefault(sort = "date", direction = Sort.Direction.DESC)
+                           @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
                            Pageable pageable) {
         return newsService.getNews(id, pageable);
     }

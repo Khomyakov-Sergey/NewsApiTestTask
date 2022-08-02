@@ -16,14 +16,17 @@ import java.util.List;
 public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "news_id", nullable = false)
     private Long id;
 
     @CreationTimestamp
+    @Column(name = "news_created_at")
     private LocalDateTime date;
 
+    @Column(name = "news_title", nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "news_text", nullable = false, columnDefinition = "TEXT")
     private String text;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
