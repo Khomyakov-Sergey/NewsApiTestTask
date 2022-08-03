@@ -77,7 +77,7 @@ public class NewsController {
 
     /**
      * This method gets news identifier, NewsDto and tries to update news with using service layer.
-     * @param id             - News identifier.
+     * @param id - News identifier.
      * @param newsDto - News information from request.
      * @return id - News identifier.
      */

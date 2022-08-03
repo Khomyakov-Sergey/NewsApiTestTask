@@ -7,8 +7,8 @@ create table news
     news_id    bigint not null default nextval('seq_news')
         primary key,
     news_created_at  timestamp,
-    news_text  text,
-    news_title varchar(255)
+    news_text  text not null,
+    news_title varchar(255) not null
 
 );
 ALTER SEQUENCE seq_news OWNED BY news_test_db.public.news.news_id;
