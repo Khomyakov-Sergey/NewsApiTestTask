@@ -8,7 +8,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.clevertec.newsapi.dto.news.NewsDto;
+import ru.clevertec.newsapi.dto.news.RequestNewsDto;
+import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 import ru.clevertec.newsapi.service.news.NewsService;
 
 import javax.validation.Valid;
@@ -33,9 +34,9 @@ public class NewsController {
      */
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<NewsDto> getAllNews(@PageableDefault(size = 6)
-                                    @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
-                                    Pageable pageable) {
+    public List<ResponseNewsDto> getAllNews(@PageableDefault(size = 6)
+                                            @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
+                                            Pageable pageable) {
         return newsService.getAllNews(pageable);
     }
 
@@ -45,7 +46,7 @@ public class NewsController {
      */
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<NewsDto> getAllNewsByDescription(@RequestParam String keyword) {
+    public List<ResponseNewsDto> getAllNewsByDescription(@RequestParam String keyword) {
         return newsService.search(keyword);
     }
 
@@ -57,9 +58,9 @@ public class NewsController {
      */
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public NewsDto getNews(@PathVariable Long id,
-                           @PageableDefault(size = 6)
-                           @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
+    public ResponseNewsDto getNews(@PathVariable Long id,
+                                   @PageableDefault(size = 6)
+                                   @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
                            Pageable pageable) {
         return newsService.getNews(id, pageable);
     }
@@ -71,20 +72,20 @@ public class NewsController {
      */
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Long createNews(@RequestBody @Valid NewsDto newsDto) {
+    public Long createNews(@RequestBody @Valid RequestNewsDto newsDto) {
         return newsService.createNews(newsDto);
     }
 
     /**
      * This method gets news identifier, NewsDto and tries to update news with using service layer.
      * @param id - News identifier.
-     * @param newsDto - News information from request.
+     * @param requestNewsDto - News information from request.
      * @return id - News identifier.
      */
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Long updateNews(@PathVariable Long id, @RequestBody @Valid NewsDto newsDto) {
-        return newsService.updateNews(id, newsDto);
+    public Long updateNews(@PathVariable Long id, @RequestBody @Valid RequestNewsDto requestNewsDto) {
+        return newsService.updateNews(id, requestNewsDto);
     }
 
     /**

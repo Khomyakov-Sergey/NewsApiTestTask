@@ -9,4 +9,8 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News, Long> {
     @Query(value = "SELECT * FROM news WHERE to_tsvector(news_title)|| to_tsvector(news_text) @@ plainto_tsquery(?1)", nativeQuery = true)
     List<News> search(String keyword);
+
+    News findNewsByTitle(String title);
+
+    News findNewsByText(String text);
 }

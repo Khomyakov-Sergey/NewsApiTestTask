@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.clevertec.newsapi.dto.comment.CommentDto;
-import ru.clevertec.newsapi.dto.comment.CreateCommentDto;
+import ru.clevertec.newsapi.dto.comment.ResponseCommentDto;
+import ru.clevertec.newsapi.dto.comment.RequestCommentDto;
 import ru.clevertec.newsapi.service.comment.CommentService;
 
 import javax.validation.Valid;
@@ -27,25 +27,25 @@ public class CommentController {
 
     /**
      * This method gets CreateCommentDto and tries to create comment for news with using service layer.
-     * @param createCommentDto - Comment information from request.
+     * @param requestCommentDto - Comment information from request.
      * @return id - Comment identifier.
      */
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Long createComment(@RequestBody @Valid CreateCommentDto createCommentDto) {
-        return commentService.createComment(createCommentDto);
+    public Long createComment(@RequestBody @Valid RequestCommentDto requestCommentDto) {
+        return commentService.createComment(requestCommentDto);
     }
 
     /**
      * This method gets comment identifier, CommentDto and tries to update comment with using service layer.
      * @param id  - Comment identifier.
-     * @param commentDto - Comment information from request.
+     * @param requestCommentDto - Comment information from request.
      * @return id - Comment identifier.
      */
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Long updateComment(@PathVariable Long id, @RequestBody @Valid CommentDto commentDto) {
-        return commentService.updateComment(id, commentDto);
+    public Long updateComment(@PathVariable Long id, @RequestBody @Valid RequestCommentDto requestCommentDto) {
+        return commentService.updateComment(id, requestCommentDto);
     }
 
     /**
@@ -65,7 +65,7 @@ public class CommentController {
      */
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentDto getComment(@PathVariable Long id) {
+    public ResponseCommentDto getComment(@PathVariable Long id) {
         return commentService.getComment(id);
     }
 
@@ -75,7 +75,7 @@ public class CommentController {
      */
     @GetMapping("/news/{newsId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getComments(@PathVariable Long newsId, Pageable pageable) {
+    public List<ResponseCommentDto> getComments(@PathVariable Long newsId, Pageable pageable) {
         return commentService.getCommentsByNewsId(newsId, pageable);
     }
 }

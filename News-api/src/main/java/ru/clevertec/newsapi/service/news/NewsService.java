@@ -1,23 +1,24 @@
 package ru.clevertec.newsapi.service.news;
 
 import org.springframework.data.domain.Pageable;
-import ru.clevertec.newsapi.dto.news.NewsDto;
+import ru.clevertec.newsapi.dto.news.RequestNewsDto;
+import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 
 import java.util.List;
 
 public interface NewsService {
 
-    Long createNews(NewsDto requestNewsDto);
+    Long createNews(RequestNewsDto requestNewsDto);
 
-    Long updateNews(Long id, NewsDto requestNewsDto);
+    Long updateNews(Long id, RequestNewsDto requestNewsDto);
 
-    NewsDto getNews(Long id, Pageable pageable);
+    ResponseNewsDto getNews(Long id, Pageable pageable);
 
     void deleteNews(Long id);
 
-    List<NewsDto> getAllNews(Pageable pageable);
+    List<ResponseNewsDto> getAllNews(Pageable pageable);
 
-    List<NewsDto> search(String search);
+    List<ResponseNewsDto> search(String search);
 
 
 

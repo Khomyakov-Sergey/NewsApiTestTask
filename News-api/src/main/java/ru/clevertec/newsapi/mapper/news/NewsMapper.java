@@ -1,7 +1,9 @@
 package ru.clevertec.newsapi.mapper.news;
 
 import org.mapstruct.Mapper;
-import ru.clevertec.newsapi.dto.news.NewsDto;
+import org.mapstruct.factory.Mappers;
+import ru.clevertec.newsapi.dto.news.RequestNewsDto;
+import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 import ru.clevertec.newsapi.entity.news.News;
 import ru.clevertec.newsapi.mapper.comment.CommentListMapper;
 
@@ -18,12 +20,12 @@ public interface NewsMapper {
      * @param news - Entity News.
      * @return NewsDto - News representation in DTO.
      */
-    NewsDto toDto(News news);
+    ResponseNewsDto toDto(News news);
 
     /**
      * This method converts News to NewsDto.
      * @param newsDto - News representation in DTO.
      * @return news - Entity News.
      */
-    News toNews(NewsDto newsDto);
+    News toNews(RequestNewsDto newsDto);
 }

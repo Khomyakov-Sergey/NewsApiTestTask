@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.clevertec.newsapi.dto.comment.CommentDto;
-import ru.clevertec.newsapi.dto.comment.CreateCommentDto;
+import ru.clevertec.newsapi.dto.comment.ResponseCommentDto;
+import ru.clevertec.newsapi.dto.comment.RequestCommentDto;
 import ru.clevertec.newsapi.entity.comment.Comment;
 import ru.clevertec.newsapi.exception.EntityByIdNotFoundException;
 import ru.clevertec.newsapi.mapper.comment.CommentListMapper;
@@ -15,7 +15,6 @@ import ru.clevertec.newsapi.repository.comment.CommentRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Service class for comments with data processing.
@@ -35,13 +34,13 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * This method creates new comment and transfers it in CommentRepository to save.
-     * @param createCommentDto - Comment information from request.
+     * @param requestCommentDto - Comment information from request.
      * @return id - Comment identifier.
      */
     @Override
     @Transactional
-    public Long createComment(CreateCommentDto createCommentDto) {
-        Comment comment = commentMapper.toComment(createCommentDto);
+    public Long createComment(RequestCommentDto requestCommentDto) {
+        Comment comment = commentMapper.toComment(requestCommentDto);
         return commentRepository.save(comment).getId();
     }
 
@@ -49,14 +48,14 @@ public class CommentServiceImpl implements CommentService {
      * This method searches comment by the transferred id and updates information by using CommentRepository.
      * If it doesn`t exist throw EntityByIdNotFoundException.
      * @param id - Comment identifier.
-     * @param commentDto - Create information from request.
+     * @param requestCommentDto - Create information from request.
      * @return id - Comment identifier.
      */
     @Override
     @Transactional
-    public Long updateComment(Long id, CommentDto commentDto) {
+    public Long updateComment(Long id, RequestCommentDto requestCommentDto) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
-        comment.setText(commentDto.getText());
+        comment.setText(requestCommentDto.getText());
         comment.setDate(LocalDateTime.now());
         return comment.getId();
     }
@@ -77,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
      * @return CommentDto - Comment representation in DTO.
      */
     @Override
-    public CommentDto getComment(Long id) {
+    public ResponseCommentDto getComment(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         return commentMapper.toDto(comment);
     }
@@ -89,7 +88,7 @@ public class CommentServiceImpl implements CommentService {
      * @return List<CommentDto> - List of all comments representation for definite news in DTO.
      */
     @Override
-    public List<CommentDto> getCommentsByNewsId(Long newsId, Pageable pageable) {
+    public List<ResponseCommentDto> getCommentsByNewsId(Long newsId, Pageable pageable) {
         List<Comment> comments = commentRepository.findAllByNews_Id(newsId, pageable).getContent();
         return commentListMapper.toDtoList(comments);
     }

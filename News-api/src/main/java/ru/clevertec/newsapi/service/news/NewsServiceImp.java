@@ -5,18 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.clevertec.newsapi.dto.news.NewsDto;
+import ru.clevertec.newsapi.dto.news.RequestNewsDto;
+import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 import ru.clevertec.newsapi.entity.comment.Comment;
 import ru.clevertec.newsapi.entity.news.News;
+import ru.clevertec.newsapi.exception.EntityAlreadyExistException;
 import ru.clevertec.newsapi.exception.EntityByIdNotFoundException;
 import ru.clevertec.newsapi.mapper.comment.CommentListMapper;
 import ru.clevertec.newsapi.mapper.news.NewsMapper;
 import ru.clevertec.newsapi.repository.comment.CommentRepository;
 import ru.clevertec.newsapi.repository.news.NewsRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -42,7 +43,7 @@ public class NewsServiceImp implements NewsService {
      * @return List<NewsDto> - List of all News representation in DTO.
      */
     @Override
-    public List<NewsDto> getAllNews(Pageable pageable) {
+    public List<ResponseNewsDto> getAllNews(Pageable pageable) {
         List<News> news = newsRepository.findAll(pageable).getContent();
         return news.stream()
                 .map(newsMapper::toDto)
@@ -51,29 +52,32 @@ public class NewsServiceImp implements NewsService {
 
     /**
      * This method creates new news and transfers it in NewsRepository to save.
-     * @param newsDto - News information from request.
+     * @param requestNewsDto - News information from request.
      * @return id - News identifier.
      */
     @Override
     @Transactional
-    public Long createNews(NewsDto newsDto) {
-        News news = newsMapper.toNews(newsDto);
+    public Long createNews(RequestNewsDto requestNewsDto) {
+        News news = newsMapper.toNews(requestNewsDto);
+        checkNewsForRepeats(news.getTitle(), news.getText());
         return newsRepository.save(news).getId();
     }
+
 
     /**
      * This method searches news by the transferred id and updates information by using NewsRepository.
      * If it doesn`t exist throw EntityByIdNotFoundException.
      * @param id - News identifier.
-     * @param newsDto - News information from request.
+     * @param requestNewsDto - News information from request.
      * @return id - News identifier.
      */
     @Override
     @Transactional
-    public Long updateNews(Long id, NewsDto newsDto) {
+    public Long updateNews(Long id, RequestNewsDto requestNewsDto) {
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
-        news.setTitle(newsDto.getTitle());
-        news.setText(newsDto.getText());
+        checkNewsForRepeats(requestNewsDto.getTitle(), requestNewsDto.getText());
+        news.setTitle(requestNewsDto.getTitle());
+        news.setText(requestNewsDto.getText());
         return news.getId();
     }
 
@@ -86,12 +90,12 @@ public class NewsServiceImp implements NewsService {
      * @return NewsDto - News representation in DTO.
      */
     @Override
-    public NewsDto getNews(Long id, Pageable pageable) {
+    public ResponseNewsDto getNews(Long id, Pageable pageable) {
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
-        NewsDto newsDto = newsMapper.toDto(news);
+        ResponseNewsDto responseNewsDto = newsMapper.toDto(news);
         List<Comment> comments = commentRepository.findAllByNews_Id(id, pageable).getContent();
-        newsDto.setComments(commentListMapper.toDtoList(comments));
-        return newsDto;
+        responseNewsDto.setComments(commentListMapper.toDtoList(comments));
+        return responseNewsDto;
     }
 
     /**
@@ -100,7 +104,7 @@ public class NewsServiceImp implements NewsService {
      * @return List<NewsDto> - List of news representation in DTO.
      */
     @Override
-    public List<NewsDto> search(String keyword) {
+    public List<ResponseNewsDto> search(String keyword) {
         List<News> news = newsRepository.search(keyword);
         return news.stream()
                 .map(newsMapper::toDto)
@@ -114,5 +118,17 @@ public class NewsServiceImp implements NewsService {
     @Override
     public void deleteNews(Long id) {
         newsRepository.deleteById(id);
+    }
+
+    /**
+     * This intermediate method checks news for repeats in title or text.
+     * If it exists -> throw EntityAlreadyExistException.
+     */
+    private void checkNewsForRepeats(String title, String text) {
+        News newsWithRepeatableTitleFromDB = newsRepository.findNewsByTitle(title);
+        News newsWithRepeatableTextFromDB = newsRepository.findNewsByText(text);
+        if (Objects.nonNull(newsWithRepeatableTitleFromDB)|| Objects.nonNull(newsWithRepeatableTextFromDB)){
+            throw new EntityAlreadyExistException();
+        }
     }
 }
