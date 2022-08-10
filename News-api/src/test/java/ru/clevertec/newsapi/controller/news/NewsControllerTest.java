@@ -44,7 +44,7 @@ public class NewsControllerTest {
     private RequestNewsDto newNews;
     private ResponseNewsDto firstNews;
     private ResponseNewsDto secondNews;
-    List<ResponseNewsDto> newsList;
+    private List<ResponseNewsDto> newsList;
 
 
     @BeforeEach
@@ -193,7 +193,7 @@ public class NewsControllerTest {
 
     @Test
     @DisplayName("Controller test of updating news, when request from user is not valid")
-    void checkResponseFor_UpdateProduct_IfRequestIsNotValid() throws Exception {
+    void checkResponseFor_UpdateNews_IfRequestIsNotValid() throws Exception {
         Long id = -1L;
 
 
