@@ -1,5 +1,8 @@
 package ru.clevertec.newsapi.controller.news;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +25,8 @@ import java.util.List;
  */
 @Slf4j
 @RequestMapping("/news")
+@Api(tags = {"News controller"})
+@Tag(name = "News controller", description = "Controller for operations with news")
 @RestController
 @RequiredArgsConstructor
 public class NewsController {
@@ -34,6 +39,7 @@ public class NewsController {
      */
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get all news from database with some kind of sorting news")
     public List<ResponseNewsDto> getAllNews(@PageableDefault(size = 6)
                                             @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
                                             Pageable pageable) {
@@ -46,6 +52,7 @@ public class NewsController {
      */
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get all news from the database by keyword")
     public List<ResponseNewsDto> getAllNewsByDescription(@RequestParam String keyword) {
         return newsService.search(keyword);
     }
@@ -58,6 +65,7 @@ public class NewsController {
      */
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get news from the database by id with some kind of sorting comments")
     public ResponseNewsDto getNews(@PathVariable Long id,
                                    @PageableDefault(size = 6)
                                    @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
@@ -72,6 +80,7 @@ public class NewsController {
      */
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create news with request body")
     public Long createNews(@RequestBody @Valid RequestNewsDto newsDto) {
         return newsService.createNews(newsDto);
     }
@@ -84,6 +93,7 @@ public class NewsController {
      */
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Update news by id and request body")
     public Long updateNews(@PathVariable Long id, @RequestBody @Valid RequestNewsDto requestNewsDto) {
         return newsService.updateNews(id, requestNewsDto);
     }
@@ -94,6 +104,7 @@ public class NewsController {
      */
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Delete news by id")
     public void deleteNews(@PathVariable Long id) {
         newsService.deleteNews(id);
     }

@@ -3,6 +3,9 @@ spring:
     name: news-api
   profiles:
     active: test
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 logging:
   level:

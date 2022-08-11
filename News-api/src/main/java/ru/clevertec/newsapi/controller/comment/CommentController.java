@@ -1,5 +1,8 @@
 package ru.clevertec.newsapi.controller.comment;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,8 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/comments")
 @RestController
+@Api(tags = {"Comments controller"})
+@Tag(name = "Comments controller", description = "Controller for operations with comments")
 @RequiredArgsConstructor
 public class CommentController {
 
@@ -32,6 +37,7 @@ public class CommentController {
      */
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create comment with request body")
     public Long createComment(@RequestBody @Valid RequestCommentDto requestCommentDto) {
         return commentService.createComment(requestCommentDto);
     }
@@ -44,6 +50,7 @@ public class CommentController {
      */
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Update comment by id and request body")
     public Long updateComment(@PathVariable Long id, @RequestBody @Valid RequestCommentDto requestCommentDto) {
         return commentService.updateComment(id, requestCommentDto);
     }
@@ -54,7 +61,8 @@ public class CommentController {
      */
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteNews(@PathVariable Long id) {
+    @ApiOperation(value = "Delete comment by id")
+    public void deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
     }
 
@@ -65,6 +73,7 @@ public class CommentController {
      */
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get comment from the database by id")
     public ResponseCommentDto getComment(@PathVariable Long id) {
         return commentService.getComment(id);
     }
@@ -75,6 +84,7 @@ public class CommentController {
      */
     @GetMapping("/news/{newsId}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Get all comments from database by news id with some kind of sorting comments")
     public List<ResponseCommentDto> getComments(@PathVariable Long newsId, Pageable pageable) {
         return commentService.getCommentsByNewsId(newsId, pageable);
     }

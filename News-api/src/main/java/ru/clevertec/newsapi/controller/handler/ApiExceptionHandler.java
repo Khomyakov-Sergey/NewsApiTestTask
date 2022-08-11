@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.clevertec.newsapi.dto.exception.ApiError;
 import ru.clevertec.newsapi.exception.EntityByIdNotFoundException;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Handler class for exceptions.
  * @author Siarhei Khamiakou
  * @version 1.0
  */
+@ApiIgnore
 @Slf4j
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -24,7 +26,7 @@ public class ApiExceptionHandler {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityByIdNotFoundException.class)
-    public ApiError handleEntityByIdNotFoundException (EntityByIdNotFoundException exception){
+    public ApiError handleEntityByIdNotFoundException(EntityByIdNotFoundException exception) {
         return new ApiError(exception.getMessage(), HttpStatus.NOT_FOUND.value());
     }
 
@@ -35,7 +37,7 @@ public class ApiExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException.class)
-    public ApiError handleDefaultException (RuntimeException exception){
+    public ApiError handleDefaultException(RuntimeException exception) {
         return new ApiError(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
 }
