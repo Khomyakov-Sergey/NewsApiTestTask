@@ -13,9 +13,17 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-
+/**
+ * Class for configuration swagger.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Configuration
 public class SwaggerConfig {
+    /**
+     * Method for getting bean, which configure swagger.
+     * @return - Docket.
+     */
     @Bean
     public Docket getBean() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -26,6 +34,10 @@ public class SwaggerConfig {
                 .apiInfo(getInfo());
     }
 
+    /**
+     * Method for getting ApiInfo, which configure base information about api.
+     * @return - ApiInfo.
+     */
     private ApiInfo getInfo() {
         return new ApiInfoBuilder().title("News API")
                 .description("News API is a web application to work with the news")
@@ -34,6 +46,9 @@ public class SwaggerConfig {
                 .build();
     }
 
+    /**
+    * Inner class for configuration pageable.
+    */
     @Getter
     private static class SwaggerPageable {
 

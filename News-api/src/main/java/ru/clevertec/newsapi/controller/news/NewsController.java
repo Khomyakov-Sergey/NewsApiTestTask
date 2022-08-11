@@ -53,7 +53,7 @@ public class NewsController {
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get all news from the database by keyword")
-    public List<ResponseNewsDto> getAllNewsByDescription(@RequestParam String keyword) {
+    public List<ResponseNewsDto> getAllNewsByKeyword(@RequestParam String keyword) {
         return newsService.search(keyword);
     }
 

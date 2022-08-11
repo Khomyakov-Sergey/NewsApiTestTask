@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.clevertec.newsapi.dto.exception.ApiError;
+import ru.clevertec.newsapi.exception.EntityAlreadyExistException;
 import ru.clevertec.newsapi.exception.EntityByIdNotFoundException;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -28,6 +29,17 @@ public class ApiExceptionHandler {
     @ExceptionHandler(EntityByIdNotFoundException.class)
     public ApiError handleEntityByIdNotFoundException(EntityByIdNotFoundException exception) {
         return new ApiError(exception.getMessage(), HttpStatus.NOT_FOUND.value());
+    }
+
+    /**
+     * This method handles EntityAlreadyExistException
+     * @param exception - exception, which throw methods, if entity already exist.
+     * @return ApiError with text "Entity with such title ot text already exist" and status error.
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(EntityAlreadyExistException.class)
+    public ApiError handleEntityAlreadyExistException(EntityAlreadyExistException exception) {
+        return new ApiError(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
     }
 
     /**

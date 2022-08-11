@@ -14,6 +14,7 @@ import java.util.List;
  * @version 1.0
  */
 @Entity
+@Table(name = "news")
 @Data
 @Builder
 @NoArgsConstructor
