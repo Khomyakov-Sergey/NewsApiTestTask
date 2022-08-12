@@ -9,7 +9,8 @@ Simple news rest api created with Java 11, Spring, PostgreSQL DB
 * [Project Status](#project-status)
 * [Contacts](#contacts)
 
-## General info(in the works)
+## General info
+(in the works)  
 This project is simple application for working with news.  
 You can create, read, update news and leave comments under it.   
 For available methods you can read it in swagger-ui  
@@ -22,7 +23,8 @@ Project is created with:
 * Spring boot version: 2.7.2
 * PostgreSQL version: 14.2
 
-## Setup(in the works)
+## Setup
+(in the works)
 
 ## Project Status
 * In progress
