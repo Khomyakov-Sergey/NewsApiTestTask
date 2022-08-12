@@ -1,6 +1,7 @@
 package ru.clevertec.newsapi.mapper.comment;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ public class CommentMapperTest {
     private CommentMapper commentMapper;
 
     @Test
+    @DisplayName("Mapper test for converting comment into dto")
     void checkCommentEntityToResponseCommentDtoWhenAllValueValid() {
         Comment comment = Comment.builder()
                 .id(1L)
@@ -38,6 +40,7 @@ public class CommentMapperTest {
     }
 
     @Test
+    @DisplayName("Mapper test for converting dto into comment")
     void checkRequestCommentDtoToCommentEntityWhenAllValueValid() {
         RequestCommentDto commentDto = RequestCommentDto.builder()
                 .text("Text")

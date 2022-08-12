@@ -1,6 +1,7 @@
 package ru.clevertec.newsapi.mapper.comment;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ public class CommentListMapperTest {
     private CommentListMapper commentListMapper;
 
     @Test
+    @DisplayName("Mapper test for converting list of comments into list of dto comments")
     void checkCommentsListToResponseCommentDtoListWhenAllValueValid() {
         int index = 0;
         Comment comment = Comment.builder()
@@ -39,6 +41,7 @@ public class CommentListMapperTest {
     }
 
     @Test
+    @DisplayName("Mapper test for converting list of dto comments into list of comments")
     void checkRequestCommentDtoListToCommentEntityListWhenAllValueValid() {
         int index = 0;
         ResponseCommentDto commentDto = ResponseCommentDto.builder()

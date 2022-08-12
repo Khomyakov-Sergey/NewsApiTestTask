@@ -1,6 +1,7 @@
 package ru.clevertec.newsapi.mapper.news;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ public class NewsMapperTest {
     private NewsMapper newsMapper;
 
     @Test
+    @DisplayName("Mapper test for converting news into dto")
     void checkNewsEntityToResponseNewsDtoWhenAllValueValid() {
         News news = News.builder()
                 .id(1L)
@@ -34,6 +36,7 @@ public class NewsMapperTest {
     }
 
     @Test
+    @DisplayName("Mapper test for converting dto into news")
     void checkRequestNewsDtoToNewsEntityWhenAllValueValid() {
         RequestNewsDto newsDto = RequestNewsDto.builder()
                 .title("Title")
