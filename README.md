@@ -15,9 +15,9 @@ You can create, read, update news and leave comments under it.
 For available methods you can read it in swagger-ui. 
 * http://localhost:8080/swagger-ui/index.html
 ___
-  ![News ](Images/news_controller.png)
+  ![News ](Images/news_controller.PNG)
 ___
-  ![Comments ](Images/comments_controller.png)
+  ![Comments ](Images/comments_controller.PNG)
 
 ## Technologies
 Project is created with:
