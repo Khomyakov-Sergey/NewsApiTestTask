@@ -47,6 +47,7 @@ public class AuthorizationWireMockTest {
         verify(postRequestedFor(urlEqualTo("/authorization"))
                 .withHeader("Content-Type", equalTo("application/json")));
         assertEquals(200, response.getStatusLine().getStatusCode());
+        wireMockServer.stop();
     }
 
 
