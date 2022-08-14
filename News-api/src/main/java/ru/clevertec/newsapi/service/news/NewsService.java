@@ -18,7 +18,7 @@ public interface NewsService {
 
     List<ResponseNewsDto> getAllNews(Pageable pageable);
 
-    List<ResponseNewsDto> search(String search);
+    List<ResponseNewsDto> search(String search, Pageable pageable);
 
 
 

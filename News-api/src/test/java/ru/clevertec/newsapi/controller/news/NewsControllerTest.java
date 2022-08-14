@@ -231,7 +231,9 @@ public class NewsControllerTest {
 
         List<ResponseNewsDto> resultList = List.of(firstNews);
 
-        Mockito.when(newsService.search(keyword)).thenReturn(resultList);
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+
+        Mockito.when(newsService.search(eq(keyword), pageableCaptor.capture())).thenReturn(resultList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/news/search")
                         .param("keyword", keyword)
@@ -241,7 +243,7 @@ public class NewsControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Matchers.is(firstNews.getId().intValue())))
                 .andDo(MockMvcResultHandlers.print());
 
-        Mockito.verify(newsService, Mockito.times(1)).search(keyword);
+        Mockito.verify(newsService, Mockito.times(1)).search(eq(keyword), pageableCaptor.capture());
 
     }
 

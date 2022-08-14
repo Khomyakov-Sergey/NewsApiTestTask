@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.newsapi.dto.comment.RequestCommentDto;
 import ru.clevertec.newsapi.dto.comment.ResponseCommentDto;
-import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 import ru.clevertec.newsapi.entity.comment.Comment;
 import ru.clevertec.newsapi.entity.news.News;
 
@@ -45,14 +44,12 @@ public class CommentMapperTest {
         RequestCommentDto commentDto = RequestCommentDto.builder()
                 .text("Text")
                 .username("Alex")
-                .newsDto(ResponseNewsDto.builder()
-                        .id(1L)
-                        .build())
+                .newsId(1L)
                 .build();
 
         Comment comment = commentMapper.toComment(commentDto);
         Assertions.assertEquals(comment.getText(), commentDto.getText());
         Assertions.assertEquals(comment.getUsername(), commentDto.getUsername());
-        Assertions.assertEquals(comment.getNews().getId(), commentDto.getNewsDto().getId());
+        Assertions.assertEquals(comment.getNews().getId(), commentDto.getNewsId());
     }
 }

@@ -2,6 +2,9 @@ package ru.clevertec.newsapi.service.news;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +46,7 @@ public class NewsServiceImp implements NewsService {
      * @return List<NewsDto> - List of all News representation in DTO.
      */
     @Override
+    @Cacheable(cacheNames = "newsCache")
     public List<ResponseNewsDto> getAllNews(Pageable pageable) {
         List<News> news = newsRepository.findAll(pageable).getContent();
         return news.stream()
@@ -57,6 +61,7 @@ public class NewsServiceImp implements NewsService {
      */
     @Override
     @Transactional
+    @CachePut(cacheNames = "newsCache",  key = "#requestNewsDto.title")
     public Long createNews(RequestNewsDto requestNewsDto) {
         News news = newsMapper.toNews(requestNewsDto);
         checkNewsForRepeats(news.getTitle(), news.getText());
@@ -73,6 +78,7 @@ public class NewsServiceImp implements NewsService {
      */
     @Override
     @Transactional
+    @CachePut(cacheNames = "newsCache", key = "#id")
     public Long updateNews(Long id, RequestNewsDto requestNewsDto) {
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         checkNewsForRepeats(requestNewsDto.getTitle(), requestNewsDto.getText());
@@ -85,11 +91,12 @@ public class NewsServiceImp implements NewsService {
      * This method searches news by the transferred id using NewsRepository.
      * If it doesn`t exist throw EntityByIdNotFoundException. For list of comments in news supporting different
      * sorting by using CommentRepository and pagination.
-     * @param id - Product identifier.
+     * @param id - News identifier.
      * @param pageable - Pagination for list of comments.
      * @return NewsDto - News representation in DTO.
      */
     @Override
+    @Cacheable(cacheNames = "newsCache", key = "#id")
     public ResponseNewsDto getNews(Long id, Pageable pageable) {
         News news = newsRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         ResponseNewsDto responseNewsDto = newsMapper.toDto(news);
@@ -104,8 +111,9 @@ public class NewsServiceImp implements NewsService {
      * @return List<NewsDto> - List of news representation in DTO.
      */
     @Override
-    public List<ResponseNewsDto> search(String keyword) {
-        List<News> news = newsRepository.search(keyword);
+    @Cacheable(cacheNames = "newsCache")
+    public List<ResponseNewsDto> search(String keyword, Pageable pageable) {
+        List<News> news = newsRepository.search(keyword, pageable).getContent();
         return news.stream()
                 .map(newsMapper::toDto)
                 .collect(Collectors.toList());
@@ -116,6 +124,7 @@ public class NewsServiceImp implements NewsService {
      * @param id - News identifier.
      */
     @Override
+    @CacheEvict(cacheNames = "newsCache", key = "#id")
     public void deleteNews(Long id) {
         newsRepository.deleteById(id);
     }

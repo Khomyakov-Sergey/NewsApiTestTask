@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import ru.clevertec.newsapi.dto.comment.RequestCommentDto;
 import ru.clevertec.newsapi.dto.comment.ResponseCommentDto;
-import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 import ru.clevertec.newsapi.entity.comment.Comment;
 import ru.clevertec.newsapi.entity.news.News;
 import ru.clevertec.newsapi.exception.EntityByIdNotFoundException;
@@ -60,10 +59,6 @@ public class CommentServiceImplTest {
                 .text("Some text...")
                 .build();
 
-        ResponseNewsDto newsDto = ResponseNewsDto.builder()
-                .id(1L)
-                .build();
-
         comment = Comment.builder()
                 .id(2L)
                 .date(LocalDateTime.of(2022, 7, 31, 10, 35, 53))
@@ -82,7 +77,7 @@ public class CommentServiceImplTest {
         requestCommentDto = RequestCommentDto.builder()
                 .text("Good comment for test...")
                 .username("Smith")
-                .newsDto(newsDto)
+                .newsId(1L)
                 .build();
 
     }

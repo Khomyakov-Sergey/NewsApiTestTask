@@ -218,13 +218,17 @@ public class NewsServiceImplTest {
     @DisplayName("News search test by keyword among title and text when DB has such word ")
     void checkResponseFor_Search_WhenNewsWithSuchKeywordExistInDBAmongTitleOrText() {
 
+        Pageable pageable = PageRequest.of(0, 10);
+        List<News> newsList = List.of(news);
+        Page<News> newsPage = new PageImpl<>(newsList);
+
         String keyword = "Iphone";
-        Mockito.when(newsRepository.search(keyword)).thenReturn(List.of(news));
+        Mockito.when(newsRepository.search(keyword, pageable)).thenReturn(newsPage);
         Mockito.when(newsMapper.toDto(news)).thenReturn(responseNewsDto);
 
-        Assertions.assertEquals(List.of(responseNewsDto), newsService.search(keyword));
+        Assertions.assertEquals(List.of(responseNewsDto), newsService.search(keyword, pageable));
 
-        Mockito.verify(newsRepository, Mockito.times(1)).search(keyword);
+        Mockito.verify(newsRepository, Mockito.times(1)).search(keyword, pageable);
         Mockito.verify(newsMapper, Mockito.times(1)).toDto(news);
 
     }

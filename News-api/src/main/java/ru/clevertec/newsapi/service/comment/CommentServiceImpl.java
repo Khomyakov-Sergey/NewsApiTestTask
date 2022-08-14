@@ -2,6 +2,9 @@ package ru.clevertec.newsapi.service.comment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +42,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     @Transactional
+    @CachePut(cacheNames = "commentsCache", key = "#requestCommentDto.username")
     public Long createComment(RequestCommentDto requestCommentDto) {
         Comment comment = commentMapper.toComment(requestCommentDto);
         return commentRepository.save(comment).getId();
@@ -53,6 +57,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     @Transactional
+    @CachePut(cacheNames = "commentsCache", key = "#id")
     public Long updateComment(Long id, RequestCommentDto requestCommentDto) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         comment.setText(requestCommentDto.getText());
@@ -65,6 +70,7 @@ public class CommentServiceImpl implements CommentService {
      * @param id - Comment identifier.
      */
     @Override
+    @CacheEvict(cacheNames = "commentsCache", key = "#id")
     public void deleteComment(Long id) {
         commentRepository.deleteById(id);
     }
@@ -73,9 +79,10 @@ public class CommentServiceImpl implements CommentService {
      * This method searches comment by the transferred id using NewsRepository.
      * If it doesn`t exist throw EntityByIdNotFoundException.
      * @param id - Comment identifier.
-     * @return CommentDto - Comment representation in DTO.
+     * @return ResponseCommentDto - Comment representation in DTO.
      */
     @Override
+    @Cacheable(cacheNames = "commentsCache", key = "#id")
     public ResponseCommentDto getComment(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new EntityByIdNotFoundException(id));
         return commentMapper.toDto(comment);
@@ -85,9 +92,10 @@ public class CommentServiceImpl implements CommentService {
      * This method searches comments by the transferred news id using CommentRepository.
      * It supports different sorting by using pagination.
      * @param newsId - News identifier.
-     * @return List<CommentDto> - List of all comments representation for definite news in DTO.
+     * @return List<ResponseCommentDto> - List of all comments representation for definite news in DTO.
      */
     @Override
+    @CachePut(cacheNames = "commentsCache", key = "#newsId")
     public List<ResponseCommentDto> getCommentsByNewsId(Long newsId, Pageable pageable) {
         List<Comment> comments = commentRepository.findAllByNews_Id(newsId, pageable).getContent();
         return commentListMapper.toDtoList(comments);

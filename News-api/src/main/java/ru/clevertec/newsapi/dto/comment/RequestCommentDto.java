@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * DTO class for creating comment.
@@ -23,7 +21,7 @@ public class RequestCommentDto {
     private String text;
     @NotBlank
     private String username;
-    @NotNull
-    private ResponseNewsDto newsDto;
+
+    private Long newsId;
 
 }

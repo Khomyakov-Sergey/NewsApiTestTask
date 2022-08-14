@@ -79,6 +79,7 @@ public class NewsIntegrationTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+
     @Test
     @DisplayName("Integration test of getting all news, when request from user is valid")
     void getNews() throws Exception {
@@ -101,6 +102,8 @@ public class NewsIntegrationTest {
         String keyword = "13";
         mockMvc.perform(MockMvcRequestBuilders.get("/news/search")
                         .param("keyword", keyword)
+                        .param("page", "0")
+                        .param("size", "6")
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))

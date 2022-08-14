@@ -7,32 +7,12 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-logging:
-  level:
-    org.springframework.web: ERROR
-    ru.clevertec.newsapi: INFO
-  file:
-    path: logs
-
-server:
-  port: 8080
 ---
 spring:
   config:
     activate:
       on-profile: prod
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
-  datasource:
-    url: jdbc:postgresql://localhost:5432/news_db
-    username: postgres
-    password: root
-    driver-class-name: org.postgresql.Driver
-
+    import: optional:configserver:http://localhost:8888
 ---
 spring:
   config:
@@ -52,3 +32,13 @@ spring:
   sql:
     init:
       mode: always
+  cloud:
+    config:
+      enabled: false
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    ru.clevertec.newsapi: INFO
+  file:
+    path: logs

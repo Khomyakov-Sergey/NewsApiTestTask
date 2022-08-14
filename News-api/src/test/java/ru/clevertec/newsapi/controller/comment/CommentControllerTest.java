@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.clevertec.newsapi.dto.comment.RequestCommentDto;
 import ru.clevertec.newsapi.dto.comment.ResponseCommentDto;
-import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 import ru.clevertec.newsapi.exception.EntityByIdNotFoundException;
 import ru.clevertec.newsapi.service.comment.CommentService;
 
@@ -53,9 +52,7 @@ public class CommentControllerTest {
         newComment = RequestCommentDto.builder()
                 .text("Comment #1")
                 .username("Alex")
-                .newsDto(ResponseNewsDto.builder()
-                        .id(1L)
-                        .build())
+                .newsId(1L)
                 .build();
 
         firstComment = ResponseCommentDto.builder()
@@ -65,14 +62,14 @@ public class CommentControllerTest {
                 .username("Alex")
                 .build();
 
-       secondComment = ResponseCommentDto.builder()
+        secondComment = ResponseCommentDto.builder()
                 .id(2L)
                 .date(LocalDateTime.of(2022, 7, 31, 11, 35, 53))
                 .text("Comment #2")
                 .username("Alex")
                 .build();
 
-       comments = List.of(firstComment, secondComment);
+        comments = List.of(firstComment, secondComment);
 
     }
 

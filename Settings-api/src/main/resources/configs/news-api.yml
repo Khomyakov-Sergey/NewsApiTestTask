@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: news-api
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/news_db
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    ru.clevertec.newsapi: INFO
+  file:
+    path: logs

@@ -26,7 +26,7 @@ public interface CommentMapper {
      * @param requestCommentDto - Comment representation in DTO for creating comment.
      * @return Comment - Entity Comment.
      */
-    @Mapping(target = "news", source = "requestCommentDto.newsDto")
+    @Mapping(source = "requestCommentDto.newsId", target = "news.id")
     Comment toComment(RequestCommentDto requestCommentDto);
 
 }

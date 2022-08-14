@@ -35,7 +35,7 @@ public class NewsController {
 
     /**
      * This method gets all news with using service layer. Also supporting pageable view.
-     * @return List<NewsDto> - List of news.
+     * @return List<ResponseNewsDto> - List of news.
      */
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -48,20 +48,20 @@ public class NewsController {
 
     /**
      * This method search all news with keyword among two columns in news(text and title).
-     * @return List<NewsDto> - List of news.
+     * @return List<ResponseNewsDto> - List of news.
      */
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get all news from the database by keyword")
-    public List<ResponseNewsDto> getAllNewsByKeyword(@RequestParam String keyword) {
-        return newsService.search(keyword);
+    public List<ResponseNewsDto> getAllNewsByKeyword(@RequestParam String keyword, Pageable pageable) {
+        return newsService.search(keyword, pageable);
     }
 
     /**
      * This method gets news identifier and tries to find news with using service layer. Also supporting pageable view
      * for list of comments inside news.
      * @param id - News identifier.
-     * @return NewsDto - News representation.
+     * @return ResponseNewsDto - News representation.
      */
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)

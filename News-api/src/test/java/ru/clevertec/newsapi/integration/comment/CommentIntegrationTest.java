@@ -22,7 +22,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.clevertec.newsapi.dto.comment.RequestCommentDto;
-import ru.clevertec.newsapi.dto.news.ResponseNewsDto;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
@@ -44,17 +43,13 @@ public class CommentIntegrationTest {
         newComment = RequestCommentDto.builder()
                 .text("Comment #1")
                 .username("Alex")
-                .newsDto(ResponseNewsDto.builder()
-                        .id(1L)
-                        .build())
+                .newsId(1L)
                 .build();
 
         updateComment = RequestCommentDto.builder()
                 .text("Test comment for tests")
                 .username("Alex")
-                .newsDto(ResponseNewsDto.builder()
-                        .id(1L)
-                        .build())
+                .newsId(1L)
                 .build();
 
     }
@@ -116,13 +111,13 @@ public class CommentIntegrationTest {
     @Test
     @DisplayName("Integration test of finding comment by id, when request from user is valid")
     void getComment() throws Exception {
-        Long id = 1L;
+        Long id = 10L;
 
         mockMvc.perform(MockMvcRequestBuilders.get("/comments/{id}", id)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(10)))
                 .andDo(MockMvcResultHandlers.print());
     }
 
