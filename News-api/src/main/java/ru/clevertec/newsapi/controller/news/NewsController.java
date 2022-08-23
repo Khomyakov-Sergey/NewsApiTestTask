@@ -41,7 +41,7 @@ public class NewsController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get all news from database with some kind of sorting news")
     public List<ResponseNewsDto> getAllNews(@PageableDefault(size = 6)
-                                            @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
+                                            @SortDefault(sort = "date", direction = Sort.Direction.DESC)
                                             Pageable pageable) {
         return newsService.getAllNews(pageable);
     }
@@ -68,7 +68,7 @@ public class NewsController {
     @ApiOperation(value = "Get news from the database by id with some kind of sorting comments")
     public ResponseNewsDto getNews(@PathVariable Long id,
                                    @PageableDefault(size = 6)
-                                   @SortDefault(sort = "news_created_at", direction = Sort.Direction.DESC)
+                                   @SortDefault(sort = "date", direction = Sort.Direction.DESC)
                            Pageable pageable) {
         return newsService.getNews(id, pageable);
     }
